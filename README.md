@@ -12,7 +12,7 @@ git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
 cd OpenRV-Rocky9-Docker
 ```
 ## 3. Build image from this Dockerfile
-Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login info on this step: 
+Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login info on this step. If you don't have an account you can get a free account here https://login.qt.io/register 
 ```
 QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
