@@ -21,7 +21,7 @@ docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWOR
 ```
 Note: You may need to use sudo, depending on your configuration.
 
-### Troubleshooting
+#### Troubleshooting
 
 - CMake Error: If you encounter a CMake error "Could not find a package configuration file provided by 'Qt5WebEngineCore'", your Qt installation likely failed. Check step 9 of 22 in the Docker build process for the reason why.
 - Qt Installation Warning: If you get the warning "Maximum number of Qt installations reached", log in to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your existing installations. Ensure your username and password are correct.
