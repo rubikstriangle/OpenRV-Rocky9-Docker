@@ -1,5 +1,4 @@
 FROM amd64/rockylinux:9
-LABEL maintainer="JED"
 
 ENV HOME /root
 WORKDIR $HOME
