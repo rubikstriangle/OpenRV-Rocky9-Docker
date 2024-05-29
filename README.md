@@ -1,2 +1,38 @@
 # OpenRV-Rocky9-Docker
-A dockerfile to build OpenRV with a rocky 9 docker.  
+A dockerfile to build OpenRV with a rocky 9 docker based on OpenRV from https://github.com/AcademySoftwareFoundation/OpenRV.git
+In my case I'm building OpenRV to run on Ubuntu 22.04 but it should work just as well for other platforms
+
+## 1. Install Docker
+https://docs.docker.com/engine/install
+
+# Build OpenRV with this Dockerfile
+## 2. Clone this repository
+```
+git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
+cd OpenRV-Dockerfile
+```
+## 3. Build image from this Dockerfile
+Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login info on this step: 
+```
+QT_USER=your_qt_username
+QT_PASSWORD=your_qt_password
+docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD={QT_PASSWORD} -t openrv_rocky9 .
+```
+You may have to use sudo, depending on your configuration.
+
+## 4. Run the docker openrv image
+Run the docker image
+```
+sudo docker run -d --name openrv_rocky9 openrv_build
+
+```
+## 5. Copy your OpenRV build from the docker
+The last few lines of your docker build should have printed out a cyan line which is a dynamically generated name of the tarball of your OpenRV build.  Copy the cyan line in your shell to copy the OpenRV build to your ~/Downloads folder.  The below command should work for version 2.0.0
+```
+sudo docker cp openrv_build:/OpenRV/OpenRV-Rocky9-x86_64-2.0.0.tar.gz ~/Downloads/
+```
+## 6. Untar your OpenRV build
+Use the tar command to decompress your OpenRV build
+```
+tar -xvf ~/Downloads/OpenRV-Rocky9-x86_64-2.0.0.tar.gz
+```
