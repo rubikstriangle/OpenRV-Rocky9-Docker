@@ -31,6 +31,6 @@ docker buildx build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_
 # Run the container to copy the tarball
 docker run -d --name openrv_container openrv_rocky9
 BUILD_NAME=$(docker exec openrv_container /bin/bash -c "source /etc/environment && echo \${BUILD_NAME}")
-docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz ~/Downloads/
+docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz $PWD/
 
 echo "Build completed. The OpenRV build has been copied to ~/Downloads/${BUILD_NAME}.tar.gz"
