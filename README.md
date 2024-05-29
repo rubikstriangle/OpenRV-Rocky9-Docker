@@ -12,14 +12,14 @@ git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
 cd OpenRV-Rocky9-Docker
 ```
 ## 3. Build image from this Dockerfile
-Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login info on this step. If you don't have an account you can get a free account here https://login.qt.io/register 
+Build the image from the `OpenRV-Rocky9-Docker` directory, swap out your qt login info on this step. If you don't have an account you can get a free account [here](https://login.qt.io/register)
 ```
 QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
 docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 ```
 You may have to use sudo, depending on your configuration.
-If you get a cmake error "Could not find a package configuration file provided by "Qt5WebEngineCore" your qt install failed check step 9 of 22 in the docker install for the reason why.  If you get the warning "Maximum number of Qt installation reached", you need to login to your qt account (https://account.qt.io/s/active-installation-list) and delete some of your installs, other wise check your user name and password.
+If you get a cmake error "Could not find a package configuration file provided by "Qt5WebEngineCore" your qt install failed check step 9 of 22 in the docker install for the reason why.  If you get the warning "Maximum number of Qt installation reached", you need to login to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your installs, other wise check your user name and password.
 
 
 ## 4. Copy your OpenRV build from the docker
