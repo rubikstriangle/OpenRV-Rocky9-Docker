@@ -67,7 +67,8 @@ RUN echo "Determining build platform..." && \
     echo "ARCHITECTURE=$ARCHITECTURE" >> /etc/environment && \
     BUILD_NAME=OpenRV-${BUILD_PLATFORM}-${ARCHITECTURE}-${VERSION} && \
     echo "BUILD_NAME=$BUILD_NAME" >> /etc/environment
-
+    echo "$BUILD_NAME" >> /OpenRV/build_name.txt
+    
 # Source the environment variables file
 RUN . /etc/environment && echo "Build Name: $BUILD_NAME"
 RUN . /etc/environment && cmake --install /OpenRV/_build --prefix /OpenRV/${BUILD_NAME} --config Release
