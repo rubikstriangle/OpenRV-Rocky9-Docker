@@ -33,7 +33,7 @@ sudo docker cp openrv_container:/OpenRV/OpenRV-Rocky9-x86_64-2.0.0.tar.gz ~/Down
 ```
 
 ## 5. Untar and test your OpenRV build
-Use the tar command to decompress your OpenRV build
+Use the tar command to decompress your OpenRV build and start up openRV:
 ```
 tar -xvf ~/Downloads/OpenRV-Rocky9-x86_64-2.0.0.tar.gz
 cd ~/Downloads/OpenRV-Rocky9-x86_64-2.0.0/bin
