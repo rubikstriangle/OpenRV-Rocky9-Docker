@@ -16,10 +16,10 @@ Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login i
 ```
 QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
-docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD={QT_PASSWORD} -t openrv_rocky9 .
+docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 ```
 You may have to use sudo, depending on your configuration.
-If you get a cmake error "Could not find a package configuration file provided by "Qt5WebEngineCore" your qt install failed check step 9 of 22 in the docker install for the reason why.  If you get the warning "Maximum number of Qt installation reached", you need to login to your qt account and delete some of your installs https://account.qt.io/s/active-installation-list
+If you get a cmake error "Could not find a package configuration file provided by "Qt5WebEngineCore" your qt install failed check step 9 of 22 in the docker install for the reason why.  If you get the warning "Maximum number of Qt installation reached", you need to login to your qt account (https://account.qt.io/s/active-installation-list) and delete some of your installs, other wise check your user name and password.
 
 ## 4. Run the docker openrv image
 Run the docker image
