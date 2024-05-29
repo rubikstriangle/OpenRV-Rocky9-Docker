@@ -23,8 +23,8 @@ Note: You may need to use sudo, depending on your configuration.
 
 #Troubleshooting
 
-    CMake Error: If you encounter a CMake error "Could not find a package configuration file provided by 'Qt5WebEngineCore'", your Qt installation likely failed. Check step 9 of 22 in the Docker build process for the reason why.
-    Qt Installation Warning: If you get the warning "Maximum number of Qt installations reached", log in to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your existing installations. Ensure your username and password are correct.
+`*`CMake Error: If you encounter a CMake error "Could not find a package configuration file provided by 'Qt5WebEngineCore'", your Qt installation likely failed. Check step 9 of 22 in the Docker build process for the reason why.
+`*`Qt Installation Warning: If you get the warning "Maximum number of Qt installations reached", log in to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your existing installations. Ensure your username and password are correct.
 
 ## 4. Copy your OpenRV build from the docker
 The last few lines of your docker build should have printed out a cyan line which is a dynamically generated name of the tarball of your OpenRV build.  Copy the cyan line in your shell to copy the OpenRV build to your ~/Downloads folder.  The below command should work for version 2.0.0
