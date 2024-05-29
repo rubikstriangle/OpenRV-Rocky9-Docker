@@ -16,9 +16,9 @@ Build the image from the OpenRV-Rocky9-Docker directory. Replace your_qt_usernam
 ```
 QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
-sudo time docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
+time docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 ```
-Note: You may not need to use sudo, depending on your configuration.
+Note: You may need to use sudo, depending on your configuration.
 
 #### Troubleshooting
 
@@ -28,8 +28,8 @@ Note: You may not need to use sudo, depending on your configuration.
 ## 4. Copy your OpenRV build from the docker
 The last few lines of your Docker build should print out a cyan line, which is a dynamically generated name of the tarball containing your OpenRV build. Use the following commands to copy the tarball to your ~/Downloads folder. Adjust the file name accordingly if it differs.
 ```
-sudo docker run -d --name openrv_container openrv_rocky9
-sudo docker cp openrv_container:/OpenRV/OpenRV-Rocky9-x86_64-2.0.0.tar.gz ~/Downloads/
+docker run -d --name openrv_container openrv_rocky9
+docker cp openrv_container:/OpenRV/OpenRV-Rocky9-x86_64-2.0.0.tar.gz ~/Downloads/
 ```
 
 ## 5. Untar and test your OpenRV build
@@ -45,13 +45,13 @@ You should see your shiny new build of openRV!
 If everything went well with your docker build you can remove the files with the following commands:
 List all containers and images:
 ```
-sudo docker system df -v
-sudo docker ps -a
+docker system df -v
+docker ps -a
 ```
 Delete the files associated with this build to free up drive space
 
 ```
-sudo docker stop openrv_container
-sudo docker rm openrv_container
-sudo docker rmi openrv_rocky9
+docker stop openrv_container
+docker rm openrv_container
+docker rmi openrv_rocky9
 ```
