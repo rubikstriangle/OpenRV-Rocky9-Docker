@@ -9,7 +9,7 @@ https://docs.docker.com/engine/install
 ## 2. Clone this repository
 ```
 git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
-cd OpenRV-Dockerfile
+cd OpenRV-Rocky9-Docker
 ```
 ## 3. Build image from this Dockerfile
 Build the image from the `OpenRV-Dockerfile` directory, swap out your qt login info on this step: 
