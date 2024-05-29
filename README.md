@@ -5,7 +5,7 @@ A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://gith
 
 ## 1. Install Docker
 Follow the instructions on the official Docker documentation to install Docker on your machine: [Install Docker](https://docs.docker.com/engine/install)
-# Build OpenRV with this Dockerfile
+
 ## 2. Clone this repository
 ```
 git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
@@ -21,7 +21,7 @@ docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWOR
 ```
 Note: You may need to use sudo, depending on your configuration.
 
-#Troubleshooting
+###Troubleshooting
 
 - CMake Error: If you encounter a CMake error "Could not find a package configuration file provided by 'Qt5WebEngineCore'", your Qt installation likely failed. Check step 9 of 22 in the Docker build process for the reason why.
 - Qt Installation Warning: If you get the warning "Maximum number of Qt installations reached", log in to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your existing installations. Ensure your username and password are correct.
