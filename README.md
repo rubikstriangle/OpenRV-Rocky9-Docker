@@ -4,8 +4,7 @@ A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://gith
 
 
 ## 1. Install Docker
-https://docs.docker.com/engine/install
-
+Follow the instructions on the official Docker documentation to install Docker on your machine: [Install Docker](https://docs.docker.com/engine/install)
 # Build OpenRV with this Dockerfile
 ## 2. Clone this repository
 ```
