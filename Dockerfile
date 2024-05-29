@@ -74,5 +74,5 @@ RUN . /etc/environment && cmake --install /OpenRV/_build --prefix /OpenRV/${BUIL
 RUN . /etc/environment && cp /lib64/libcrypt.so.2 /OpenRV/${BUILD_NAME}/lib
 RUN . /etc/environment && tar -czvf ${BUILD_NAME}.tar.gz -C /OpenRV ${BUILD_NAME}
 RUN . /etc/environment && echo -e "\n\e[1;32mRun the following lines to copy your OpenRV build into your ~/Downloads folder:\e[0m" && \
-    echo -e "\e[1;36msudo docker run -d --name openrv_container openrv_rocky9\e[0m\n\n" \
+    echo -e "\e[1;36msudo docker run -d --name openrv_container openrv_rocky9\e[0m" && \
     echo -e "\e[1;36msudo docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz ~/Downloads/\e[0m\n\n"
