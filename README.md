@@ -19,7 +19,7 @@ QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
 sudo time docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 ```
-Note: You may need to use sudo, depending on your configuration.
+Note: You may not need to use sudo, depending on your configuration.
 
 #### Troubleshooting
 
