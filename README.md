@@ -1,5 +1,5 @@
 # OpenRV-Rocky9-Docker
-A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions.
+A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions. Be sure that you have about 30GB of free space for the temporary build files.
 
 
 
@@ -17,7 +17,7 @@ Build the image from the OpenRV-Rocky9-Docker directory. Replace your_qt_usernam
 ```
 QT_USER=your_qt_username
 QT_PASSWORD=your_qt_password
-docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
+sudo time docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 ```
 Note: You may need to use sudo, depending on your configuration.
 
@@ -36,4 +36,18 @@ sudo docker cp openrv_container:/OpenRV/OpenRV-Rocky9-x86_64-2.0.0.tar.gz ~/Down
 Use the tar command to decompress your OpenRV build
 ```
 tar -xvf ~/Downloads/OpenRV-Rocky9-x86_64-2.0.0.tar.gz
+```
+## 6. Clean up
+If everything went well with your docker build you can remove the files with the following commands:
+List all containers and images:
+```
+sudo docker system df -v
+sudo docker ps -a
+```
+Delete the files associated with this build to free up drive space
+
+```
+sudo docker stop openrv_container
+sudo docker rm openrv_container
+sudo docker rmi openrv_rocky9
 ```
