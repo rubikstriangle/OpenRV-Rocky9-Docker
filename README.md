@@ -21,7 +21,7 @@ docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWOR
 You may have to use sudo, depending on your configuration.
 If you get a cmake error "Could not find a package configuration file provided by "Qt5WebEngineCore" your qt install failed check step 9 of 22 in the docker install for the reason why.  If you get the warning "Maximum number of Qt installation reached", you need to login to your qt account (https://account.qt.io/s/active-installation-list) and delete some of your installs, other wise check your user name and password.
 
-```
+
 ## 4. Copy your OpenRV build from the docker
 The last few lines of your docker build should have printed out a cyan line which is a dynamically generated name of the tarball of your OpenRV build.  Copy the cyan line in your shell to copy the OpenRV build to your ~/Downloads folder.  The below command should work for version 2.0.0
 ```
