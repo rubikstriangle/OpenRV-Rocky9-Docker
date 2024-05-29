@@ -1,6 +1,7 @@
 # OpenRV-Rocky9-Docker
-A dockerfile to build OpenRV with a rocky 9 docker based on OpenRV from https://github.com/AcademySoftwareFoundation/OpenRV.git
-In my case I'm building OpenRV to run on Ubuntu 22.04 but it should work just as well for other linux distributions.
+A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions.
+
+
 
 ## 1. Install Docker
 https://docs.docker.com/engine/install
