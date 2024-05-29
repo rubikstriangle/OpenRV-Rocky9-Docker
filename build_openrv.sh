@@ -33,4 +33,4 @@ docker run -d --name openrv_container openrv_rocky9
 BUILD_NAME=$(docker exec openrv_container /bin/bash -c "source /etc/environment && echo \${BUILD_NAME}")
 docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz $PWD/
 
-echo "Build completed. The OpenRV build has been copied to ~/Downloads/${BUILD_NAME}.tar.gz"
+echo "Build completed. The OpenRV build has been copied to $PWD/${BUILD_NAME}.tar.gz"
