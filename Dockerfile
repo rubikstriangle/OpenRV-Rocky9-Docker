@@ -1,4 +1,4 @@
-FROM amd64/rockylinux:9
+FROM amd64/rockylinux:9.3
 
 ENV HOME /root
 WORKDIR $HOME
