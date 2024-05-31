@@ -55,3 +55,10 @@ docker stop openrv_container
 docker rm openrv_container
 docker rmi openrv_rocky9
 ```
+## 7. Trouble shooting.
+This is my first time with docker, just getting used to it so I'm leaving a few notes for future self.
+If you need to trouble shoot your docker during the build you can get a shell like this:
+```
+docker run -it openrv_rocky9 /bin/bash
+
+```
