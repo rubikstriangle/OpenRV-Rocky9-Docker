@@ -20,6 +20,12 @@ if [ -z "$QT_USER" ] || [ -z "$QT_PASSWORD" ]; then
     usage
 fi
 
+# Check if QT_USER and QT_PASSWORD are not placeholder values
+if [ "$QT_USER" == "your_qt_username" ] || [ "$QT_PASSWORD" == "your_qt_password" ]; then
+    echo "Error: QT_USER and QT_PASSWORD cannot be the placeholder values from the README file."
+    usage
+fi
+
 # Ensure Buildx is installed
 docker buildx install
 docker buildx create --use
