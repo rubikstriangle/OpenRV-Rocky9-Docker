@@ -27,16 +27,55 @@ if [ "$QT_USER" == "your_qt_username" ] || [ "$QT_PASSWORD" == "your_qt_password
 fi
 
 # Ensure Buildx is installed
-docker buildx install
-docker buildx create --use
-docker buildx inspect --bootstrap
+#docker buildx install
+#docker buildx create --use
+#docker buildx inspect --bootstrap
 
 # Build Docker image
-docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
+docker build --load --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
 
-# Run the container to copy the tarball
-docker run -d --name openrv_container openrv_rocky9
+
+# Verify the target container has been stopped 
+if [ "$(docker ps -q --filter name=^openrv_cont$)" ]; then
+    docker stop openrv_cont
+    echo "Stopped the container openrv_container"
+fi
+# Verify target container doesn't exist and remove if it does
+if [ "$(docker ps -aq --filter name=^openrv_container$)" ]; then
+    docker rm -f openrv_container
+    echo "Removed docker container openrv_container"
+fi
+
+# Run the container
+echo "Running the container openrv_container...."
+docker run --name openrv_container -d openrv_rocky9 tail -f /dev/null
+
+echo "Retrieving the OpenRV build name from the docker image"
+
 BUILD_NAME=$(docker exec openrv_container /bin/bash -c "source /etc/environment && echo \${BUILD_NAME}")
+
+echo "Copying the OpenRV build name from the docker image"
+
 docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz $PWD/
 
-echo "Build completed. The OpenRV build has been copied to $PWD/${BUILD_NAME}.tar.gz"
+if [ "$(docker ps -aq --filter name=^openrv_container$)" ]; then
+    echo "Build completed. The OpenRV build has been copied to $PWD/${BUILD_NAME}.tar.gz"
+else
+    echo "Build failed. The file /OpenRV/${BUILD_NAME} is not present."
+    docker rm openrv_cont
+    exit 1
+fi
+
+# Verify the target container has been stopped 
+if [ "$(docker ps -q --filter name=^openrv_cont$)" ]; then
+    docker stop openrv_container
+    echo "Stopped the container openrv_container"
+fi
+
+# Verify target container doesn't exist and remove if it does
+if [ "$(docker ps -aq --filter name=^openrv_container$)" ]; then
+    docker rm -f openrv_container
+    echo "Removed docker container openrv_container"
+fi
+
+
