@@ -13,7 +13,7 @@ cd OpenRV-Rocky9-Docker
 
 
 ### 1. Install Docker (In 5 steps)
-These instructions manually run the above script in a few more steps. Follow the instructions on the official Docker documentation to install Docker on your machine: [Install Docker](https://docs.docker.com/engine/install)
+These instructions manually run the above script in a few steps. Follow the instructions on the official Docker documentation to install Docker on your machine: [Install Docker](https://docs.docker.com/engine/install)
 
 ## 2. Clone this repository
 ```
