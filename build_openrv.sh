@@ -73,7 +73,7 @@ done
 cat << EOF > accept_license.exp
 #!/usr/bin/expect
 
-set timeout 600
+set timeout 3600
 
 spawn /tmp/qt-installer.run --email ${QT_USER} --root /root/Qt --password ${QT_PASSWORD} --platform minimal --accept-licenses --confirm-command install qt.qt5.5152.qtpdf qt.qt5.5152.qtpurchasing qt.qt5.5152.qtvirtualkeyboard qt.qt5.5152.qtquicktimeline qt.qt5.5152.qtlottie qt.qt5.5152.debug_info qt.qt5.5152.qtscript qt.qt5.5152.qtcharts qt.qt5.5152.qtwebengine qt.qt5.5152.qtwebglplugin qt.qt5.5152.qtnetworkauth qt.qt5.5152.qtwaylandcompositor qt.qt5.5152.qtdatavis3d qt.qt5.5152.logs qt.qt5.5152 qt.qt5.5152.src qt.qt5.5152.gcc_64 qt.qt5.5152.qtquick3d
 
