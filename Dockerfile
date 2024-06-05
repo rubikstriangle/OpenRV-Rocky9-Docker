@@ -19,7 +19,7 @@ ARG QT_USER
 ARG QT_PASSWORD
 
 # Download Qt installer script
-RUN wget https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz -O /tmp/qt-installer.run \
+RUN wget https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-linux-x64-4.8.0.run -O /tmp/qt-installer.run \
     && chmod +x /tmp/qt-installer.run
 
 # Install Qt with debug information and check for the "Maximum number of Qt installation reached" message
