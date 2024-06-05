@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-
-
-
 # Usage function
 usage() {
     echo "Usage: $0 -u <QT_USER> -p <QT_PASSWORD>"
