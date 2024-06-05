@@ -3,7 +3,7 @@ A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://gith
 
 ### Building openRV in one command. 
 Just replace your_qt_username and your_qt_password with your actual Qt login credentials. If you don't have an account, you can get a free account [here](https://login.qt.io/register).
-Run these command to create an insall of open RV.  Note you must have docker installed.
+Run these command to create an insall of open RV.  Note you must have docker installed. This will create the file "OpenRV-Rocky9-x86_64-2.0.0.tar.gz" in the same directory that has a working copy of RV.
 ```
 git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
 cd OpenRV-Rocky9-Docker
