@@ -1,9 +1,9 @@
 # OpenRV-Rocky9-Docker
-A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions. Be sure that you have about 30GB of free space for the temporary build files. The total file size for rv is 468M and total compute time was about 33 minutes on a machine with 128 threads.
+A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions. Be sure that you have about 40GB of free space for the temporary build files. The total file size for rv is 468M and total compute time was about 33 minutes on a machine with 128 threads.
 
-### Building openRV in one command. 
-Just replace your_qt_username and your_qt_password with your actual Qt login credentials. If you don't have an account, you can get a free account [here](https://login.qt.io/register).
-Run these command to create an insall of open RV.  Note you must have docker installed. This will create a workign copy of rv all tar'ed up and ready to go  "OpenRV-Rocky9-x86_64-2.0.0.tar.gz".
+## Building openRV in one command. 
+
+Run this command to create an insall of open RV.  Note you must have docker installed. This will create a working copy of rv all tar'ed up and ready to go  "OpenRV-Rocky9-x86_64-2.0.0.tar.gz".
 ```
 git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
 cd OpenRV-Rocky9-Docker
@@ -11,7 +11,7 @@ cd OpenRV-Rocky9-Docker
 
 ```
 
-### Building openRV in five steps
+## Building openRV in five steps
 ### 1. Install Docker
 These instructions manually run the above script in a few steps. Follow the instructions on the official Docker documentation to install Docker on your machine: [Install Docker](https://docs.docker.com/engine/install)
 
