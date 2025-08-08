@@ -24,7 +24,7 @@ cd OpenRV-Rocky9-Docker
 ## 3. Build image from this Dockerfile
 Build the image from the OpenRV-Rocky9-Docker directory. 
 ```
-docker --load -t openrv_rocky9.
+docker build --load -t openrv_rocky9 .
 ```
 ## 4. Copy your OpenRV build from the docker
 Run the below command to copy the OpenRV build from the docker to your current work directory.
