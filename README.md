@@ -1,7 +1,7 @@
 # OpenRV-Rocky9-Docker
 A Dockerfile to build OpenRV with a Rocky 9 base, based on [OpenRV](https://github.com/AcademySoftwareFoundation/OpenRV.git). This setup is tested on Ubuntu 22.04 but should work just as well for other Linux distributions. Be sure that you have about 40GB of free space for the temporary build files. The total file size for rv is 468M and total compute time was about 33 minutes on a machine with 128 threads.
 
-## Building openRV in one command. 
+## Building openRV in one step. 
 
 Run this command to create an insall of open RV.  Note you must have docker installed. This will create a working copy of rv all tar'ed up and ready to go  "OpenRV-Rocky9-x86_64-2.0.0.tar.gz".
 ```
