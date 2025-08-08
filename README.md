@@ -30,8 +30,8 @@ docker --load -t openrv_rocky9.
 Run the below command to copy the OpenRV build from the docker to your current work directory.
 ```
 docker run --name openrv_container -d openrv_rocky9 tail -f /dev/null
-BUILD_NAME=$(docker exec openrv_container /bin/bash -c "source /etc/environment && echo \${BUILD_NAME}")
-docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz $PWD/
+BUILD_NAME=$(docker exec openrv_container /bin/bash -c "source /home/rv/OpenRV/environment && echo \${BUILD_NAME}")
+docker cp openrv_container:/home/rv/OpenRV/${BUILD_NAME}.tar.gz $PWD/
 docker stop openrv_container
 docker rm -f openrv_container
 ```
@@ -39,8 +39,8 @@ docker rm -f openrv_container
 ## 5. Untar and test your OpenRV build
 Use the tar command to decompress your OpenRV build and start up openRV:
 ```
-tar -xvf OpenRV-Rocky9-x86_64-2.0.0.tar.gz
-cd OpenRV-Rocky9-x86_64-2.0.0/bin
+tar -xvf ${BUILD_NAME}.tar.gz
+cd ${BUILD_NAME}/bin
 ./rv
 ```
 You should see your shiny new build of openRV!
