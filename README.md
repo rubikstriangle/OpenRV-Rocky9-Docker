@@ -7,7 +7,7 @@ Run these command to create an insall of open RV.  Note you must have docker ins
 ```
 git clone https://github.com/rubikstriangle/OpenRV-Rocky9-Docker
 cd OpenRV-Rocky9-Docker
-./build_openrv.sh -u your_qt_username -p your_qt_password
+./build_openrv.sh
 
 ```
 
@@ -22,20 +22,10 @@ cd OpenRV-Rocky9-Docker
 ```
 
 ## 3. Build image from this Dockerfile
-Build the image from the OpenRV-Rocky9-Docker directory. Replace your_qt_username and your_qt_password with your actual Qt login credentials. If you don't have an account, you can get a free account [here](https://login.qt.io/register).
-
+Build the image from the OpenRV-Rocky9-Docker directory. 
 ```
-QT_USER=your_qt_username
-QT_PASSWORD=your_qt_password
-time docker build --build-arg QT_USER=${QT_USER} --build-arg QT_PASSWORD=${QT_PASSWORD} -t openrv_rocky9 .
+docker --load -t openrv_rocky9.
 ```
-Note: You may need to use sudo, depending on your configuration.
-
-#### Troubleshooting
-
-- CMake Error: If you encounter a CMake error "Could not find a package configuration file provided by 'Qt5WebEngineCore'", your Qt installation likely failed. Check step 9 of 22 in the Docker build process for the reason why.
-- Qt Installation Warning: If you get the warning "Maximum number of Qt installations reached", log in to your [qt account](https://account.qt.io/s/active-installation-list) and delete some of your existing installations. Ensure your username and password are correct.
-
 ## 4. Copy your OpenRV build from the docker
 Run the below command to copy the OpenRV build from the docker to your current work directory.
 ```
