@@ -135,19 +135,26 @@ RUN python -m aqt install-qt linux desktop ${QT_VERSION} gcc_64 -O ~/Qt \
 -m ${QT_MODULES} \
 --archives ${QT_ARCHIVES}
 
-
 # Install OpenRV
-RUN git clone --recursive https://github.com/AcademySoftwareFoundation/OpenRV.git /home/rv/OpenRV/
-WORKDIR /home/rv/OpenRV/
-RUN python3 -m venv .venv
-RUN source /home/rv/OpenRV/.venv/bin/activate
-RUN pip install --upgrade pip
-RUN python3 -m pip install --user --upgrade -r /home/rv/OpenRV/requirements.txt
-RUN cmake -B /home/rv/OpenRV/_build -G Ninja -DCMAKE_BUILD_TYPE=Release -DRV_DEPS_QT6_LOCATION=/home/rv/Qt/6.5.3/gcc_64 -DRV_VFX_PLATFORM=CY2024 -DRV_DEPS_WIN_PERL_ROOT=
-RUN cmake --build /home/rv/OpenRV/_build --config Release -v --parallel=128 --target main_executable
+RUN git clone --recursive https://github.com/AcademySoftwareFoundation/OpenRV.git /home/rv/OpenRV
+WORKDIR /home/rv/OpenRV
 
+# Use pyenv's Python (3.11.8) and install Python deps
+RUN python -m venv .venv && \
+    . .venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Determine build platform, version, and architecture for creation of rv tarball name
+# Configure & build
+RUN . .venv/bin/activate && \
+    cmake -B _build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DRV_DEPS_QT6_LOCATION=/home/rv/Qt/6.5.3/gcc_64 \
+      -DRV_VFX_PLATFORM=CY2024 \
+      -DRV_DEPS_WIN_PERL_ROOT= && \
+    cmake --build _build --config Release -v --parallel=128 --target main_executable
+
+# Determine build platform, version, architecture, and create tarball
 RUN echo "Determining build platform..." && \
     if [ -f /etc/os-release ]; then \
         . /etc/os-release; \
@@ -157,7 +164,7 @@ RUN echo "Determining build platform..." && \
             BUILD_PLATFORM=$(echo ${NAME}${VERSION_ID} | tr ' ' '_'); \
         fi \
     else \
-        BUILD_PLATFORM=$(uname -s); \
+        BUILD_PLATFORM=$(uname -S); \
     fi && \
     VERSION=$(/home/rv/OpenRV/_build/stage/app/bin/rv -version) && \
     ARCHITECTURE=$(uname -m) && \
@@ -166,16 +173,7 @@ RUN echo "Determining build platform..." && \
     echo "ARCHITECTURE=$ARCHITECTURE" >> /home/rv/OpenRV/environment && \
     BUILD_NAME=OpenRV-${BUILD_PLATFORM}-${ARCHITECTURE}-${VERSION} && \
     echo "BUILD_NAME=$BUILD_NAME" >> /home/rv/OpenRV/environment && \
-    echo "$BUILD_NAME" >> /home/rv/OpenRV/build_name.txt
-    
-# Source the environment variables file
-RUN . /home/rv/OpenRV/environment && echo "Build Name: $BUILD_NAME"
-RUN . /home/rv/OpenRV/environment && cmake --install /home/rv/OpenRV/_build --prefix /home/rv/OpenRV/${BUILD_NAME} --config Release
-RUN . /home/rv/OpenRV/environment && cp /lib64/libcrypt.so.2 /home/rv/OpenRV/${BUILD_NAME}/lib
-RUN . /home/rv/OpenRV/environment && tar -czvf ${BUILD_NAME}.tar.gz -C /home/rv/OpenRV/ ${BUILD_NAME}
-RUN . /home/rv/OpenRV/environment && echo -e "\n\e[1;32mRun the following lines to copy your OpenRV build into your ~/Downloads folder:\e[0m" && \
-    echo -e "\e[1;36msudo docker run -d --name openrv_container openrv_rocky9\e[0m" && \
-    echo -e "\e[1;36msudo docker cp openrv_container:/OpenRV/${BUILD_NAME}.tar.gz ~/Downloads/\e[0m\n\n"
-
-
-#CMD ["/bin/bash"]
+    echo "$BUILD_NAME" >> /home/rv/OpenRV/build_name.txt && \
+    cmake --install /home/rv/OpenRV/_build --prefix /home/rv/OpenRV/${BUILD_NAME} --config Release && \
+    cp /lib64/libcrypt.so.2 /home/rv/OpenRV/${BUILD_NAME}/lib && \
+    tar -czvf ${BUILD_NAME}.tar.gz -C /home/rv/OpenRV ${BUILD_NAME}
