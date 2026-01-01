@@ -149,7 +149,7 @@ RUN python -m venv .venv && \
 RUN . .venv/bin/activate && \
     cmake -B _build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
-      -DRV_DEPS_QT6_LOCATION=/home/rv/Qt/6.5.3/gcc_64 \
+      -DRV_DEPS_QT_LOCATION=/home/rv/Qt/6.5.3/gcc_64 \
       -DRV_VFX_PLATFORM=CY2024 \
       -DRV_DEPS_WIN_PERL_ROOT= && \
     cmake --build _build --config Release -v --parallel=128 --target main_executable
