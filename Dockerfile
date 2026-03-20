@@ -135,6 +135,10 @@ RUN python -m aqt install-qt linux desktop ${QT_VERSION} gcc_64 -O ~/Qt \
 -m ${QT_MODULES} \
 --archives ${QT_ARCHIVES}
 
+# Install Rust (required by some Python deps such as cryptography)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/home/rv/.cargo/bin:${PATH}"
+
 # Install OpenRV
 RUN git clone --recursive https://github.com/AcademySoftwareFoundation/OpenRV.git /home/rv/OpenRV
 WORKDIR /home/rv/OpenRV
@@ -149,8 +153,8 @@ RUN python -m venv .venv && \
 RUN . .venv/bin/activate && \
     cmake -B _build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
-      -DRV_DEPS_QT_LOCATION=/home/rv/Qt/6.5.3/gcc_64 \
-      -DRV_VFX_PLATFORM=CY2024 \
+      -DRV_DEPS_QT_LOCATION=/home/rv/Qt/${QT_VERSION}/gcc_64 \
+      -DRV_VFX_PLATFORM=${VFX_PLATFORM} \
       -DRV_DEPS_WIN_PERL_ROOT= && \
     cmake --build _build --config Release -v --parallel=128 --target main_executable
 
