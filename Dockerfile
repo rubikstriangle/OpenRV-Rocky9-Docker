@@ -149,7 +149,7 @@ RUN python -m venv .venv && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Configure & build with non-free codecs (optimized for high-core machine)
+# Configure & build with non-free codecs (optimized for 128-core machine)
 RUN . .venv/bin/activate && \
     source ./rvcmds.sh && \
     rvcfg \
@@ -161,7 +161,7 @@ RUN . .venv/bin/activate && \
       -DRV_DEPS_QT_LOCATION=/home/rv/Qt/${QT_VERSION}/gcc_64 \
       -DRV_VFX_PLATFORM=${VFX_PLATFORM} \
       -DRV_DEPS_WIN_PERL_ROOT= \
-      -DCMAKE_MAKE_PROGRAM=/home/rv/ninja/ninja && \   # ensure Ninja is used
+      -DCMAKE_MAKE_PROGRAM=/home/rv/ninja/ninja && \
     cmake --build _build --config Release --parallel $(nproc) -v --target main_executable
 
 # Determine build platform, version, architecture, and create tarball
