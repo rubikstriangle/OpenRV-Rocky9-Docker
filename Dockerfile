@@ -149,8 +149,16 @@ RUN python -m venv .venv && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Configure & build
+# Configure & build with non-free codecs enabled (AAC audio, ProRes, HEVC, DNxHD, etc.)
 RUN . .venv/bin/activate && \
+    # Source the OpenRV build environment
+    source ./rvcmds.sh && \
+    # Enable non-free FFmpeg codecs
+    rvcfg \
+      -DRV_FFMPEG_NON_FREE_DECODERS_TO_ENABLE="aac;aac_fixed;aac_latm;ac3;bink;binkaudio_dct;binkaudio_rdft;dnxhd;dvvideo;hevc;mpeg2video;prores;prores_ks;qtrle;svq1;svq3;vp9" \
+      -DRV_FFMPEG_NON_FREE_ENCODERS_TO_ENABLE="aac;ac3;dnxhd;dvvideo;hevc;mpeg2video;prores;qtrle;svq1;svq3" \
+      -DRV_FFMPEG="8" && \
+    # Normal CMake configure
     cmake -B _build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DRV_DEPS_QT_LOCATION=/home/rv/Qt/${QT_VERSION}/gcc_64 \
