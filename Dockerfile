@@ -63,8 +63,8 @@ RUN dnf groupinstall "Development Tools" -y \
     libxkbfile \
     mesa-libGLU \
     mesa-libGLU-devel \
-    mesa-libOSMesa \
-    mesa-libOSMesa-devel \
+    mesa-compat-libOSMesa \
+    mesa-compat-libOSMesa-devel \
     meson \
     nasm \
     ncurses-devel \
@@ -140,7 +140,9 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/home/rv/.cargo/bin:${PATH}"
 
 # Install OpenRV
-RUN git clone --recursive https://github.com/AcademySoftwareFoundation/OpenRV.git /home/rv/OpenRV
+ARG OPENRV_REF=v4.0.2
+RUN git clone --branch "${OPENRV_REF}" --recursive https://github.com/AcademySoftwareFoundation/OpenRV.git /home/rv/OpenRV && \
+    git -C /home/rv/OpenRV rev-parse HEAD > /home/rv/openrv-source-commit.txt
 WORKDIR /home/rv/OpenRV
 
 # Use pyenv's Python (3.11.8) and install Python deps
@@ -149,19 +151,22 @@ RUN python -m venv .venv && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Configure & build with non-free codecs (optimized for 128-core machine)
+# Configure explicitly: rvcmds.sh is interactive unless its environment is preset.
 RUN . .venv/bin/activate && \
-    source ./rvcmds.sh && \
-    rvcfg \
-      -DRV_FFMPEG_NON_FREE_DECODERS_TO_ENABLE="aac;aac_fixed;aac_latm;ac3;hevc;prores;prores_ks;dnxhd;vp9" \
-      -DRV_FFMPEG_NON_FREE_ENCODERS_TO_ENABLE="aac;ac3;hevc;prores;dnxhd" \
-      -DRV_FFMPEG="8" && \
-    cmake -B _build -G Ninja \
+    cmake -S . -B _build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DRV_DEPS_QT_LOCATION=/home/rv/Qt/${QT_VERSION}/gcc_64 \
       -DRV_VFX_PLATFORM=${VFX_PLATFORM} \
-      -DRV_DEPS_WIN_PERL_ROOT= \
-      -DCMAKE_MAKE_PROGRAM=/home/rv/ninja/ninja && \
+      -DCMAKE_MAKE_PROGRAM=/home/rv/ninja/ninja \
+      -DRV_FFMPEG_NON_FREE_DECODERS_TO_ENABLE="aac;aac_fixed;aac_latm;ac3;hevc;prores;prores_ks;dnxhd;vp9" \
+      -DRV_FFMPEG_NON_FREE_ENCODERS_TO_ENABLE="aac;ac3;hevc;prores;dnxhd" \
+      -DRV_FFMPEG=8
+
+# Finish dependency installation before compiling plugins that consume generated headers.
+RUN . .venv/bin/activate && \
+    cmake --build _build --config Release --parallel $(nproc) -v --target dependencies
+
+RUN . .venv/bin/activate && \
     cmake --build _build --config Release --parallel $(nproc) -v --target main_executable
 
 # Determine build platform, version, architecture, and create tarball
