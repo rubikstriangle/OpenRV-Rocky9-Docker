@@ -94,3 +94,36 @@ docker image rm openrv_rocky9
 ```
 
 Do not use global Docker pruning just to clean up one build. The wrapper automatically removes its temporary extraction container. Keep your output archive before deleting builder resources.
+
+## Native WebP and AVIF support
+
+The normal `./build_openrv.sh` build now includes native **WebP and AVIF still-image
+readers**. Keep `native-formats/` and `tests/` beside the Dockerfile; they are part
+of the build context. No converter, host codec installation, or manual plugin
+installation is required after extracting the archive.
+
+The build compiles OpenImageIO's WebP and HEIF/AVIF plugins using the exact sources,
+headers, and libraries already built for RV. It also registers `.avif` with RV's
+image reader. Rocky/EPEL provides WebP, libheif, and the dav1d AV1 decoder. Their
+required runtime libraries and license notices are bundled in the archive. The
+launchers locate libheif's decoder relative to `RV_HOME`, so relocation does not
+rely on the builder's `/usr/lib64/libheif` directory.
+
+Before creating the tarball, the build runs the **packaged `rvio_sw`** on real
+WebP, transparent WebP, and AVIF fixtures and verifies their dimensions and RGBA
+pixels. Software rendering makes the check independent of a Docker GPU/display.
+A format listing or RVIO's exit code alone is not accepted as proof of support.
+Missing codecs, failed decoding, or unexpected pixels fail the build.
+
+`native-formats.txt` in the archive and the exported build-info file record the
+successful checks. `--extract-only` rejects older images that lack these checks;
+run a normal build once to produce an updated image. The upstream release and
+source revision may be unchanged, so choose a new `-o` directory if you already
+have an archive with the same name.
+
+Reader support does not choose an OCIO viewing transform. Existing personal
+color-management packages still control display appearance. These checks cover
+SDR still images; animated WebP/AVIF, HDR viewing, and HEIC/HEVC decoding are not
+claimed by this change. When changing `OPENRV_REF`, mismatched upstream reader
+sources or AVIF registration changes fail visibly rather than silently dropping
+support.

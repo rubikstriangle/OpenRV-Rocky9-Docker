@@ -40,7 +40,7 @@ if [[ "$EXTRACT_ONLY" == true && "$NO_CACHE" == true ]]; then
   echo '-n cannot be combined with --extract-only' >&2
   exit 2
 fi
-for tool in docker tar sha256sum; do
+for tool in docker tar sha256sum grep; do
   command -v "$tool" >/dev/null || { echo "Required command not found: $tool" >&2; exit 1; }
 done
 docker info >/dev/null
@@ -82,8 +82,21 @@ done
 docker cp "$CONTAINER_ID:/home/rv/OpenRV/${BUILD_NAME}.tar.gz" "$TEMP_DIR/$ARTIFACT_NAME"
 # Read the entire archive, checking compression and tar structure before publishing.
 tar -tzf "$TEMP_DIR/$ARTIFACT_NAME" > /dev/null
+# Old images can list WebP without decoding it. Require the marker written only
+# after the packaged readers pass real decode tests, even with --extract-only.
+if ! tar -xOzf "$TEMP_DIR/$ARTIFACT_NAME" "$BUILD_NAME/native-formats.txt" > "$TEMP_DIR/native-formats.txt"; then
+  echo 'Image lacks verified native WebP/AVIF support; rebuild with the updated Dockerfile.' >&2
+  exit 1
+fi
+for format in webp avif; do
+  grep -qx "$format=decode-tested" "$TEMP_DIR/native-formats.txt" || {
+    echo "Image has no successful $format decode check; rebuild it." >&2
+    exit 1
+  }
+done
 IMAGE_ID=$(docker inspect --format '{{.Image}}' "$CONTAINER_ID")
 printf 'source_commit=%s\nimage_id=%s\narchive_root=%s\n' "$SOURCE_COMMIT" "$IMAGE_ID" "$BUILD_NAME" > "$TEMP_DIR/$ARTIFACT_NAME.build-info.txt"
+cat "$TEMP_DIR/native-formats.txt" >> "$TEMP_DIR/$ARTIFACT_NAME.build-info.txt"
 (cd "$TEMP_DIR" && sha256sum "$ARTIFACT_NAME" > "$ARTIFACT_NAME.sha256")
 for name in "$ARTIFACT_NAME" "$ARTIFACT_NAME.sha256" "$ARTIFACT_NAME.build-info.txt"; do
   mv -- "$TEMP_DIR/$name" "$OUTPUT_DIR/$name"

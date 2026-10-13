@@ -169,6 +169,19 @@ RUN . .venv/bin/activate && \
 RUN . .venv/bin/activate && \
     cmake --build _build --config Release --parallel $(nproc) -v --target main_executable
 
+# Build the missing readers against this build's exact OIIO headers/library.
+# Keep this after the expensive RV compilation so codec changes reuse that cache.
+USER root
+RUN dnf install -y libwebp-devel libheif-devel python3-pillow && dnf clean all
+USER rv
+COPY native-formats /tmp/native-formats
+COPY tests /tmp/native-format-tests
+RUN python /tmp/native-formats/register_avif.py /home/rv/OpenRV && \
+    cmake --build _build --target io_oiio --parallel 4 && \
+    cmake -S /tmp/native-formats -B /home/rv/web-image-build \
+      -DRV_BUILD=/home/rv/OpenRV/_build -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build /home/rv/web-image-build --parallel 4
+
 # Determine build platform, version, architecture, and create tarball
 RUN echo "Determining build platform..." && \
     if [ -f /etc/os-release ]; then \
@@ -191,4 +204,11 @@ RUN echo "Determining build platform..." && \
     echo "$BUILD_NAME" >> /home/rv/OpenRV/build_name.txt && \
     cmake --install /home/rv/OpenRV/_build --prefix /home/rv/OpenRV/${BUILD_NAME} --config Release && \
     cp /lib64/libcrypt.so.2 /home/rv/OpenRV/${BUILD_NAME}/lib && \
+    cmake --install /home/rv/web-image-build --prefix /home/rv/OpenRV/${BUILD_NAME} && \
+    python /tmp/native-formats/bundle_runtime.py /home/rv/OpenRV/${BUILD_NAME} && \
+    mkdir -p /home/rv/OpenRV/${BUILD_NAME}/share/licenses/OpenImageIO-readers && \
+    cp _build/RV_DEPS_OIIO/src/LICENSE* /home/rv/OpenRV/${BUILD_NAME}/share/licenses/OpenImageIO-readers/ && \
+    /home/rv/OpenRV/${BUILD_NAME}/bin/makeFBIOformats /home/rv/OpenRV/${BUILD_NAME}/plugins/ImageFormats && \
+    /usr/bin/python3 /tmp/native-format-tests/test_native_formats.py /home/rv/OpenRV/${BUILD_NAME} && \
+    printf 'webp=decode-tested\navif=decode-tested\n' > /home/rv/OpenRV/${BUILD_NAME}/native-formats.txt && \
     tar -czvf ${BUILD_NAME}.tar.gz -C /home/rv/OpenRV ${BUILD_NAME}
